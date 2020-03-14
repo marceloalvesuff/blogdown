@@ -11,6 +11,8 @@ tags:
 ---
 
 ```{r}
+
+knitr::opts_chunk$set(collapse = TRUE)
 par (mar = c(0, 1, 0 ,1))
 pie(
   c(280, 60, 20),
