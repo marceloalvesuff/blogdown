@@ -1,0 +1,215 @@
+---
+title: "Perda da hegemonia da imprensa - a disputa pela visibilidade na eleição de 2018"
+author: "Marcelo Alves"
+date: "2020-03-17"
+output: 
+  html_document:
+    toc: true # table of contents
+    fig_width: 12 # comprimento da figura
+    fig_height: 8 # altura da figura
+
+---
+
+```{r setup, include=FALSE}
+options(scipen = 999) # codigo para retirar formatacao cientifica dos numeros
+### inserir chunk = Ctrl + Alt + I 
+library(tidyverse)
+library(hrbrthemes)
+library(janitor)
+library(formattable)
+library(knitr)
+library(Rmisc)
+library(plotly)
+library(ggiraph)
+Sys.setlocale("LC_TIME", 'portuguese')
+### dados
+load(file = "dados_lumina_2018.Rdata")
+
+opts_chunk$set(warning = FALSE, message = F, echo = F, fig.align = "center") # impedir que o documento exiba avisos de warning
+
+```
+
+
+O poder de negociar e distribuir atenção é um recurso essencial para os meios de comunicação. Durante períodos eleitorais, a exposição midiática tradicionalmente era construída por duas lógicas institucionalizadas: a do jornalismo e da política. Na internet, todavia, outros atores ocupam a cena para criar e circular conteúdos. A disputa pela visibilidade em mídias sociais envolve fontes jornalísticas, políticos, partidos, movimentos sociais, além de veículos jornalísticos nativos digitais, blogueiros e atores emergentes que desafiam as classificações. O objetivo desse artigo é comparar os compartilhamentos obtidos por veículos da imprensa com páginas de esquerda e de direita no Facebook. Esta pesquisa investiga 82.915 publicações realizadas por 30 fan-pages no Facebook durante a eleição de 2018 para compreender o rearranjo do estatuto da visibilidade no sistema midiático híbrido. Resultados indicam que veículos da imprensa jornalística tradicional convertem boa parte de sua audiência para o Facebook e possuem a maior média de seguidores entre as categorias estudadas. A média de compartilhamento, no entanto, é consideravelmente menor, sugerindo uma ameaça à sua hegemonia da concentração da atenção do público. Ao final do artigo, discutimos as implicações dos achados para a comunicação político-eleitoral, indicamos limitações e apontamos possíveis caminhos para outras pesquisas.
+
+
+### Paginas na amostra
+
+```{r inserir_tabela}
+p %>% 
+  select(from_name, tipo, likes, Posts, Compartilhamentos) %>%
+  mutate_if(is.numeric, prettyNum, big.mark = ".") %>% 
+  mutate(Compartilhamentos = color_bar("lightgreen")(Compartilhamentos))%>%
+  kable(align = "c", position = "center", 
+        col.names = c("Página", 
+                      "Categoria", 
+                      "Seguidores", 
+                      "Posts", 
+                      "Compartilhamentos")) 
+```
+
+
+### Descritivas de seguidores
+
+
+```{r inserir_tb2}
+
+table <-  Rmisc::summarySE(p, measurevar="likes",
+                           groupvars=c("tipo")) %>% 
+   mutate_if(is.numeric, prettyNum, big.mark = ".", decimal.mark = ",") 
+
+kable(table, align = "c", position = "center", 
+        col.names = c("Categoria", 
+                      "N", 
+                      "Seguidores", 
+                      "Desvio", 
+                      "Erro", 
+                      "Intervalo de Confiança"))
+
+```
+
+
+Dessa forma, essa tecnologia unifica no mesmo ambiente o processo analítico dos dados, utilizando de todos os pacotes da linguagem R, e a produção de relatórios finalizados para entrega aos clientes. Além de gerar um resultado bastante consistente, permite acesso direto ao código e aos detalhes da análise de dados.
+
+
+
+### Descritivas de compartilhamentos 
+
+
+```{r desc_shares}
+
+t <-  Rmisc::summarySE(amostra, measurevar="shares_count",
+                           groupvars=c("tipo")) %>% 
+   mutate_if(is.numeric, prettyNum, big.mark = ".", decimal.mark = ",") 
+
+kable(t, 
+      align = "c", position = "center", 
+        col.names = c("Categoria", 
+                      "N", 
+                      "Compartilhamentos", 
+                      "Desvio", 
+                      "Erro", 
+                      "Intervalo de Confiança"))
+
+
+```
+
+
+
+### Posts por dia
+
+```{r postspordia}
+
+
+
+a <- amostra %>% 
+  group_by(mes_dia) %>% 
+  dplyr::summarise(n = n()) %>% 
+  ggplot(aes(mes_dia, n)) + 
+  geom_col_interactive(aes(tooltip = n,  alpha = .2), fill = "blue") + 
+  labs(x = "Mês", y = "Posts") +
+  theme_ipsum_rc(grid = "Y", # informa linhas de margem 
+                 plot_title_size = 20, # tamanho titulo
+                 subtitle_size = 14, 
+                 subtitle_face = "italic", # subtitulo estilo fonte
+                 axis_text_size = 20, # tamanho rotulos dos eixos
+                 axis_title_size = 20) + theme(legend.position = "none")
+
+girafe(ggobj = a)
+
+```
+
+### Compartilhamentos por mes
+
+```{r shares}
+
+ylab <- c(0, 10, 20, 30)
+
+
+tmp <- amostra %>% 
+  dplyr::group_by(tipo, mes_dia) %>% 
+  dplyr::summarise(n = sum(shares_count, na.rm = T)) %>% 
+  na.omit() 
+
+
+b <- tmp %>% 
+  ungroup %>% 
+  ggplot(aes(x=mes_dia, y=n, group = tipo, color = tipo)) +
+  geom_line_interactive(aes(tooltip = n), size = 4) +
+  geom_point( fill = "white", size = 4.5, shape = 21) +
+  #facet_wrap(~ NATUREZA) +
+  labs(x = "", y = "Total de Compartilhamentos", 
+       caption = "\nDados extraídos pela Facebook Graph API")  +
+  theme_ipsum_rc(grid = "Y", base_size = 16, 
+                 axis_text_size = 20, 
+                 caption_size = 14,axis_title_just = "center", axis_title_size =   14) + 
+  scale_colour_grey()  +
+  theme(legend.position = 'none')  +
+  scale_y_continuous(labels = paste0(ylab, "M"),
+                     breaks = 10^6 * ylab
+  ) + scale_x_date(date_breaks = "1 month", date_labels = "%b") + expand_limits(x = as.Date("2018-10-16"))
+
+
+ggiraph(ggobj = b)
+
+
+```
+
+
+## Anova
+
+### Tabela anova
+
+```{r anova}
+
+
+res.aov <- aov(log_shares ~ 
+                 tipo, data = amostra)
+
+# Summary of the analysis
+t <- summary(res.aov)[[1]] 
+t$variable <- rownames(t)
+df <- data.frame(t)
+# arrumar
+names(df)[5] <- "p"
+rownames(df) <- NULL
+
+kable(df,  align = "c",  
+      position = "center"
+      )
+
+
+
+```
+
+Assim, quando se observa comparativamente um recorte de fan-pages muito populares durante o pleito de 2018, é possível compreender a proporção do alcance de mensagens direitistas no Facebook. Somente no mês de outubro, essas páginas acumularam quase o dobro dos compartilhamentos da esquerda. Como a difusão viral das publicações é relevante para o alcance global da mensagem e pesquisas empíricas reforçam que a distribuição da audiência digital é extremamente concentrada em poucos atores (Hindman, 2008), é fundamental jogar luz sobre quem angaria maior engajamento de compartilhamento em suas publicações.
+O teste estatístico Anova analisa a diferença entre as médias das três categorias. A estatística-F avalia a variância dentro dos fatores e entre os fatores, quanto maior o valor, mais relevante a distância entre as médias. O resultado da estatística-F 8646,6 reforça que há diferença estatisticamente relevante entre as médias dos grupos de páginas sob investigação. 
+
+
+
+### Barras de erro 
+
+```{r barraserro}
+
+table <-  Rmisc::summarySE(amostra, measurevar="shares_count",
+                           groupvars=c("tipo"))
+d <- ggplot(table, ### The data frame to use. 
+       aes(x = reorder(tipo, shares_count),
+           y = shares_count)) +
+  geom_point(size  = 4) +
+  geom_errorbar_interactive(aes(ymin  = shares_count - ci,
+                    ymax  = shares_count + ci, 
+                    tooltip = tipo),
+                width = 0.2, 
+                size  = 0.7) + coord_flip() + theme_minimal() + 
+  labs(x = "", y = "Compartilhamentos",
+       caption = "\nFonte: Facebook Graph API \nNota: Barras de erro representam o intervalo de confiança, \nmedido como duas vezes o erro padrão" ) + 
+  hrbrthemes::theme_ipsum_rc(grid = "X", 
+                             axis_text_size = 20, 
+                             caption_size = 14,axis_title_just = "center", axis_title_size =   20)
+
+ girafe(ggobj = d)
+
+
+```
+
