@@ -1,0 +1,188 @@
+---
+title: "Perda da hegemonia da imprensa - a disputa pela visibilidade na eleição de 2018"
+author: "Marcelo Alves"
+date: "2020-03-17"
+output: 
+  blogdown::html_document:
+    toc: true # table of contents
+    number_sections: true
+    summary: Post explicativo e material para reprodução do artigo publicado pela Revista Lumina
+    toc_depth: 1
+    fig_width: 12 # comprimento da figura
+    fig_height: 8 # altura da figura
+
+---
+
+```{r setup, include=FALSE}
+options(scipen = 999) # codigo para retirar formatacao cientifica dos numeros
+### inserir chunk = Ctrl + Alt + I 
+library(tidyverse)
+library(hrbrthemes)
+library(janitor)
+library(formattable)
+library(knitr)
+library(Rmisc)
+library(ggiraph)
+Sys.setlocale("LC_TIME", 'portuguese')
+### dados
+load(file = "dados_lumina_2018.Rdata")
+
+# tema
+tema <- theme(plot.title = element_text(colour="#2d2d2d",size=28, face = "bold", family = "Roboto Condensed"),
+              plot.caption =  element_text(colour="grey20",size=10, face = "plain", family = "Roboto Condensed"),
+              plot.subtitle = element_text(colour="grey20",size=20, face = "plain", family = "Roboto Condensed"),
+              axis.text.y = element_text(colour="grey20",size=18),
+              axis.text.x = element_text(colour="grey20",size=18),
+              strip.text = element_text(size = 12, face = "bold", family = "Arial Narrow"))+
+  theme(
+    panel.grid.minor.x=element_blank(), 
+   # panel.grid.major.x=element_blank(),
+    panel.grid.minor.y=element_blank())
+
+opts_chunk$set(warning = FALSE, message = F, echo = F, fig.align = "center") # impedir que o documento exiba avisos de warning
+
+```
+
+## Apresentaçao
+
+Esse post contém o material para reprodução do seguinte artigo acadêmico:
+
+* [Perda da hegemonia da imprensa - a disputa pela visibilidade na eleição de 2018](https://periodicos.ufjf.br/index.php/lumina/article/view/28668/)
+* O estudo empírico é um primeiro recorte de um estudo mais amplo que realizei em minha tese de doutorado [Desarranjo da visibilidade, desordem informacional e polarização no Brasil entre 2013 e 2018](https://www.researchgate.net/profile/Marcelo_Dos_Santos_Junior) 
+* Os dados e script analítico estão disponíveis em meu [`Github`](https://github.com/marceloalvesuff/Lumina-2019)
+
+## Problema
+
+Na última década, O Facebook se tornou uma fonte muito imporante de consumo de notícias. O [Digital News Report](http://www.digitalnewsreport.org/survey/) constata duas tendências: 
+
+1. a televisão e as mídias digitais são os principais meios utilizados pelas pessoas para consumir informações; 
+2. há um declínio constante no consumo de jornais impressos, que caíram quase pela metade nos hábitos midiáticos brasileiros.
+  
+Outro ponto importante do relatório é que o **Facebook** continua sendo o aplicativo digital mais citado para ler notícias, com `53%`, um ponto acima do Whatsapp. 
+
+A ideia principal do artigo é a seguinte:
+
+{{% alert note %}}
+Considerando que o Facebook possui dinâmicas próprias de circulação de conteúdos, influenciada pelos algoritmos e pela curadoria social das pessoas [`Benkler et al., 2018`](https://www.oxfordscholarship.com/view/10.1093/oso/9780190923624.001.0001/oso-9780190923624), quais foram os atores que tiveram mais visibilidade na eleição de 2018?
+{{% /alert %}}
+
+A proposta do estudo é lançar um olhar ainda inicial sobre como as publicações sobre política se disseminam na plataforma. Além disso, dialogo com trabalhos sobre [`desinformação`](http://www.scielo.br/scielo.php?pid=S1982-25532019000200031&script=sci_arttext), [`polarização`](http://ctpol.unb.br/compolitica2019/GT6/gt6_Goya_Fiacadori_Santos.pdf) e [`fragmentação do sistema midiático`](https://bdtd.ucb.br/index.php/esf/article/view/10387) ao comparar a posição da imprensa tradicional em relação a atores políticos, iniciativas apócrifas para guerrilha informacional e movimentos sociais de esquerda e de direita. 
+
+## Dados
+
+Para entender o que aconteceu, fiz um recorte das 30 páginas mais compartilhadas de três categorias: 
+
+* **imprensa**, 
+* **direita** e 
+* **esquerda**.
+
+As classificações foram realizadas combinando técnicas de `análise de redes sociais` e `análise de conteúdo` durante a pesquisa de minha tese de doutorado. 
+
+A **Tabela 1** resume os dados das páginas inseridas na amostra:
+
+```{r inserir_tabela}
+p %>% 
+  select(from_name, tipo, likes, Compartilhamentos, Posts) %>%
+  mutate(Posts = color_bar("lightgreen")(Posts))%>%
+  mutate_if(is.numeric, prettyNum, big.mark = ".") %>% 
+  kable(align = "c", position = "center", 
+        col.names = c("Página", 
+                      "Categoria", 
+                      "Seguidores", 
+                      "Compartilhamentos", 
+                      "Posts")) 
+```
+
+Já podemos identificar que nenhuma das cinco páginas com total de compartilhamentos mais alto no Facebook entre agosto e outubro de 2018 foi da imprensa jornalística. O `Portal UOL` aparece somente em sexto lugar, porém, com um volume muito alto de posts. Se comparado com `Jair Bolsonaro` que precisou de apenas 533 publicações para atingir quase 15 milhões de compartilhamentos, percebemos uma discrepância significativa.  
+
+## Resultados
+
+Para compreender melhor as frequências, a **Figura 1** agrega os dados, calculando o total e a proporção de compartilhamentos de cada categoria.
+
+
+```{r postspordia}
+
+
+a <- amostra %>%
+  group_by(tipo) %>% 
+  dplyr::summarise(n = mean(shares_count)) %>% 
+  mutate(p = n/sum(n)) %>% 
+  ggplot(aes(x=reorder(tipo, p), y=p)) +
+  geom_col_interactive(aes(tooltip = percent(p), data_id = tipo, fill = "red"),
+                       fill = "#4b82db", alpha = .8)+
+  labs(x = "", y = "", title = "Declínio da visibilidade da imprensa", 
+       subtitle = "Jornais tem a menor proporção de compartilhamentos\n Páginas de direita e de esquerda são as mais compartilhadas", 
+       caption = "Dados extraídos pela Facebook Graph API")+
+  geom_text(aes(label= paste0(percent(p), "\nn = ", prettyNum(n,big.mark =  "."))), 
+            hjust=-.2, vjust=.5, size = 5, fontface = "bold", 
+            color = "#3d3d3d") +
+  #scale_y_comma(limits=c(0,150000))+ 
+  theme_ipsum_rc(grid="Y") + tema +
+  scale_y_percent() + coord_flip() +
+  expand_limits(y = 1)+
+  theme_ipsum_rc(grid = "Y", # informa linhas de margem 
+                 plot_title_size = 24, # tamanho titulo
+                 subtitle_size = 14, 
+                 subtitle_face = "italic", # subtitulo estilo fonte
+                 axis_text_size = 20, # tamanho rotulos dos eixos
+                 axis_title_size = 20)
+
+
+girafe(ggobj = a, 
+       options = list(opts_tooltip(css = "background-color:white;"), 
+                      opts_hover(css = "fill:skyblue;")),width_svg = 7, height_svg = 6)
+
+```
+
+Salta aos olhos o achado que as 10 páginas de direita estudadas atingiram mais da metade de compartilhamentos. Ou seja, conseguiram propagar suas mensagens para mais usuários do que as outras 20 combinadas. As medidas chamam a atenção e ajudam a entender trabalhos anteriores ([`Telles, 2015`](http://bibliotecadigital.fgv.br/ojs/index.php/gvexecutivo/article/viewFile/56842/55378); [`Alves, 2017`](http://bibliotecadigital.tse.jus.br/xmlui/handle/bdtse/4823); [`Penteado e Lerner, 2018`](http://bibliotecadigital.tse.jus.br/xmlui/handle/bdtse/4823) ) que falam da ascensão das direitas nas mídias sociais.
+
+Na **Figura 2** analiso as médias de compartilhamentos, indicando, ainda, as barras de erro.
+
+
+```{r barraserro}
+
+
+table <-  Rmisc::summarySE(amostra, measurevar="shares_count",
+                           groupvars=c("tipo"))
+d <- ggplot(table, ### The data frame to use. 
+            aes(x = reorder(tipo, shares_count),
+                y = shares_count)) +
+  geom_point_interactive(aes(tooltip = round(shares_count, 2), data_id = tipo), size  = 6, color = "skyblue") +
+  geom_errorbar_interactive(aes(ymin  = shares_count - ci,
+                                ymax  = shares_count + ci, 
+                                tooltip = tipo, data_id = tipo),
+                            width = 0.2, 
+                            size  = 0.7, color = "skyblue") + coord_flip() + theme_minimal() + 
+  labs(title = "Direita também possui médias mais altas", 
+       subtitle = "As páginas obtiveram altos valores de disseminação,\ntambém acima das demais categorias",
+    x = "", y = "Compartilhamentos",
+       caption = "\nFonte: Facebook Graph API \nNota: Barras de erro representam o intervalo de confiança, \nmedido como duas vezes o erro padrão" ) + 
+  hrbrthemes::theme_ipsum_rc(grid = "X", 
+                             axis_text_size = 20, 
+                             caption_size = 14,axis_title_just = "center", axis_title_size =   20)
+
+
+
+girafe(ggobj =d, 
+       options = list(opts_tooltip(css = "background-color:white;"), 
+                      opts_hover(css = "fill:aquamarine;")),width_svg = 7, height_svg = 6)
+
+
+```
+
+Novamente, também encontramos grande regularidade nos compartilhamentos das páginas de direita. Mesmo tendo rotinas produtivas mais organizadas e dedicando recursos para a criação de conteúdo e gestão de mídias sociais[`Alves et al., 2019`](https://journals.sagepub.com/doi/abs/10.1177/1461444818797610), a imprensa jornalística não recebe grande audiência na plataforma.
+
+## Implicações
+
+
+{{% alert note %}}
+* Por que esses resultados são importantes?
+{{% /alert %}}
+
+
+
+A comunicação político-eleitoral está estruturada em torno de paradigmas fundamentais,  entre  eles,  a  centralidade  da  mídia  como  espaço  de  construção  das  imagens políticas. Esse espaço possui lógicas de atuação institucionalizadas, de um lado, pela cobertura jornalística dos eventos e temas e, de outro, pelos partidos que distribuem  tempo  e  recurso  de  campanha  entre  os  candidatos,  particularmente,  o  acesso  ao  Horário  Gratuito  de  Propaganda  Eleitoral.  
+
+Até  recentemente,  pesquisas  sobre  a  disputa  pela  visibilidade  na  internet  vem  demonstrando  que  a  imprensa  jornalística  colonizou  a  web  e  possui  os  portais  informacionais  mais  acessados  [`Hindman, 2008`](https://press.princeton.edu/books/paperback/9780691138688/the-myth-of-digital-democracy);  e  que,  entre  os  políticos,  aqueles  que  ocupam  posições  de liderança, cargos de destaque e que possuem carreira mais sólida também angariam mais  atenção  nas  mídias  sociais   [`Larsson e Moe, 2014`](https://journals.sagepub.com/doi/10.1177/2158244014559015).  
+
+Os  resultados  empíricos  dessa  pesquisa  contribuem  para  a  compreensão  de  um  quadro  mais  complexo,  no  qual atores radicalizados capturam a visibilidade e engajam bases de seguidores no compartilhamento das publicações com maior alcance que a imprensa tradicional.

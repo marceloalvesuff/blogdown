@@ -1,0 +1,301 @@
+---
+title: "Perda da hegemonia da imprensa - a disputa pela visibilidade na eleição de 2018"
+author: "Marcelo Alves"
+date: "2020-03-17"
+output: 
+  blogdown::html_document:
+    toc: true # table of contents
+    number_sections: true
+    summary: Post explicativo e material para reprodução do artigo publicado pela Revista Lumina
+    toc_depth: 1
+    fig_width: 12 # comprimento da figura
+    fig_height: 8 # altura da figura
+
+---
+
+<script src="/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
+<script src="/rmarkdown-libs/d3/d3.min.js"></script>
+<script src="/rmarkdown-libs/d3-lasso/d3-lasso.min.js"></script>
+<link href="/rmarkdown-libs/ggiraphjs/styles.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/ggiraphjs/ggiraphjs.min.js"></script>
+<script src="/rmarkdown-libs/girafe-binding/girafe.js"></script>
+
+
+<div id="apresentaçao" class="section level2">
+<h2>Apresentaçao</h2>
+<p>Esse post contém o material para reprodução do seguinte artigo acadêmico:</p>
+<ul>
+<li><a href="https://periodicos.ufjf.br/index.php/lumina/article/view/28668/">Perda da hegemonia da imprensa - a disputa pela visibilidade na eleição de 2018</a></li>
+<li>O estudo empírico é um primeiro recorte de um estudo mais amplo que realizei em minha tese de doutorado <a href="https://www.researchgate.net/profile/Marcelo_Dos_Santos_Junior">Desarranjo da visibilidade, desordem informacional e polarização no Brasil entre 2013 e 2018</a></li>
+<li>Os dados e script analítico estão disponíveis em meu <a href="https://github.com/marceloalvesuff/Lumina-2019"><code>Github</code></a></li>
+</ul>
+</div>
+<div id="problema" class="section level2">
+<h2>Problema</h2>
+<p>Na última década, O Facebook se tornou uma fonte muito imporante de consumo de notícias. O <a href="http://www.digitalnewsreport.org/survey/">Digital News Report</a> constata duas tendências:</p>
+<ol style="list-style-type: decimal">
+<li>a televisão e as mídias digitais são os principais meios utilizados pelas pessoas para consumir informações;</li>
+<li>há um declínio constante no consumo de jornais impressos, que caíram quase pela metade nos hábitos midiáticos brasileiros.</li>
+</ol>
+<p>Outro ponto importante do relatório é que o <strong>Facebook</strong> continua sendo o aplicativo digital mais citado para ler notícias, com <code>53%</code>, um ponto acima do Whatsapp.</p>
+<p>A ideia principal do artigo é a seguinte:</p>
+<p>{{% alert note %}}
+Considerando que o Facebook possui dinâmicas próprias de circulação de conteúdos, influenciada pelos algoritmos e pela curadoria social das pessoas <a href="https://www.oxfordscholarship.com/view/10.1093/oso/9780190923624.001.0001/oso-9780190923624"><code>Benkler et al., 2018</code></a>, quais foram os atores que tiveram mais visibilidade na eleição de 2018?
+{{% /alert %}}</p>
+<p>A proposta do estudo é lançar um olhar ainda inicial sobre como as publicações sobre política se disseminam na plataforma. Além disso, dialogo com trabalhos sobre <a href="http://www.scielo.br/scielo.php?pid=S1982-25532019000200031&amp;script=sci_arttext"><code>desinformação</code></a>, <a href="http://ctpol.unb.br/compolitica2019/GT6/gt6_Goya_Fiacadori_Santos.pdf"><code>polarização</code></a> e <a href="https://bdtd.ucb.br/index.php/esf/article/view/10387"><code>fragmentação do sistema midiático</code></a> ao comparar a posição da imprensa tradicional em relação a atores políticos, iniciativas apócrifas para guerrilha informacional e movimentos sociais de esquerda e de direita.</p>
+</div>
+<div id="dados" class="section level2">
+<h2>Dados</h2>
+<p>Para entender o que aconteceu, fiz um recorte das 30 páginas mais compartilhadas de três categorias:</p>
+<ul>
+<li><strong>imprensa</strong>,</li>
+<li><strong>direita</strong> e</li>
+<li><strong>esquerda</strong>.</li>
+</ul>
+<p>As classificações foram realizadas combinando técnicas de <code>análise de redes sociais</code> e <code>análise de conteúdo</code> durante a pesquisa de minha tese de doutorado.</p>
+<p>A <strong>Tabela 1</strong> resume os dados das páginas inseridas na amostra:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="center">Página</th>
+<th align="center">Categoria</th>
+<th align="center">Seguidores</th>
+<th align="center">Compartilhamentos</th>
+<th align="center">Posts</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">Jair Messias Bolsonaro</td>
+<td align="center">Direita</td>
+<td align="center">3.544.385</td>
+<td align="center">14.931.943</td>
+<td align="center"><span style="display: inline-block; direction: rtl; border-radius: 4px; padding-right: 2px; background-color: lightgreen; width: 8.68%">533</span></td>
+</tr>
+<tr class="even">
+<td align="center">Quebrando o Tabu</td>
+<td align="center">Esquerda</td>
+<td align="center">6.536.517</td>
+<td align="center">13.082.825</td>
+<td align="center"><span style="display: inline-block; direction: rtl; border-radius: 4px; padding-right: 2px; background-color: lightgreen; width: 26.20%">1609</span></td>
+</tr>
+<tr class="odd">
+<td align="center">MBL - Movimento Brasil Livre</td>
+<td align="center">Direita</td>
+<td align="center">1.898.460</td>
+<td align="center">10.269.810</td>
+<td align="center"><span style="display: inline-block; direction: rtl; border-radius: 4px; padding-right: 2px; background-color: lightgreen; width: 36.43%">2237</span></td>
+</tr>
+<tr class="even">
+<td align="center">Joice Hasselmann</td>
+<td align="center">Direita</td>
+<td align="center">796.683</td>
+<td align="center">8.473.651</td>
+<td align="center"><span style="display: inline-block; direction: rtl; border-radius: 4px; padding-right: 2px; background-color: lightgreen; width: 26.40%">1621</span></td>
+</tr>
+<tr class="odd">
+<td align="center">Lula</td>
+<td align="center">Esquerda</td>
+<td align="center">2.741.927</td>
+<td align="center">5.771.066</td>
+<td align="center"><span style="display: inline-block; direction: rtl; border-radius: 4px; padding-right: 2px; background-color: lightgreen; width: 20.49%">1258</span></td>
+</tr>
+<tr class="even">
+<td align="center">UOL</td>
+<td align="center">Imprensa</td>
+<td align="center">3.715.885</td>
+<td align="center">5.524.763</td>
+<td align="center"><span style="display: inline-block; direction: rtl; border-radius: 4px; padding-right: 2px; background-color: lightgreen; width: 84.97%">5218</span></td>
+</tr>
+<tr class="odd">
+<td align="center">República de Curitiba</td>
+<td align="center">Direita</td>
+<td align="center">199.630</td>
+<td align="center">5.378.189</td>
+<td align="center"><span style="display: inline-block; direction: rtl; border-radius: 4px; padding-right: 2px; background-color: lightgreen; width: 13.45%">826</span></td>
+</tr>
+<tr class="even">
+<td align="center">Brasil 247</td>
+<td align="center">Esquerda</td>
+<td align="center">817.372</td>
+<td align="center">4.348.111</td>
+<td align="center"><span style="display: inline-block; direction: rtl; border-radius: 4px; padding-right: 2px; background-color: lightgreen; width: 100.00%">6141</span></td>
+</tr>
+<tr class="odd">
+<td align="center">Folha Política</td>
+<td align="center">Direita</td>
+<td align="center">1.459.449</td>
+<td align="center">4.267.981</td>
+<td align="center"><span style="display: inline-block; direction: rtl; border-radius: 4px; padding-right: 2px; background-color: lightgreen; width: 31.15%">1913</span></td>
+</tr>
+<tr class="even">
+<td align="center">O Globo</td>
+<td align="center">Imprensa</td>
+<td align="center">5.163.577</td>
+<td align="center">4.065.480</td>
+<td align="center"><span style="display: inline-block; direction: rtl; border-radius: 4px; padding-right: 2px; background-color: lightgreen; width: 81.63%">5013</span></td>
+</tr>
+<tr class="odd">
+<td align="center">VEJA</td>
+<td align="center">Imprensa</td>
+<td align="center">7.034.549</td>
+<td align="center">4.041.360</td>
+<td align="center"><span style="display: inline-block; direction: rtl; border-radius: 4px; padding-right: 2px; background-color: lightgreen; width: 74.30%">4563</span></td>
+</tr>
+<tr class="even">
+<td align="center">Vem Pra Rua Brasil</td>
+<td align="center">Direita</td>
+<td align="center">1.474.126</td>
+<td align="center">4.031.526</td>
+<td align="center"><span style="display: inline-block; direction: rtl; border-radius: 4px; padding-right: 2px; background-color: lightgreen; width: 14.30%">878</span></td>
+</tr>
+<tr class="odd">
+<td align="center">Verdade sem manipulação</td>
+<td align="center">Esquerda</td>
+<td align="center">444.548</td>
+<td align="center">3.952.077</td>
+<td align="center"><span style="display: inline-block; direction: rtl; border-radius: 4px; padding-right: 2px; background-color: lightgreen; width: 56.81%">3489</span></td>
+</tr>
+<tr class="even">
+<td align="center">Mídia Ninja</td>
+<td align="center">Esquerda</td>
+<td align="center">1.276.209</td>
+<td align="center">3.830.119</td>
+<td align="center"><span style="display: inline-block; direction: rtl; border-radius: 4px; padding-right: 2px; background-color: lightgreen; width: 55.30%">3396</span></td>
+</tr>
+<tr class="odd">
+<td align="center">Bolsonaro Opressor 2.0</td>
+<td align="center">Direita</td>
+<td align="center">400.429</td>
+<td align="center">3.787.565</td>
+<td align="center"><span style="display: inline-block; direction: rtl; border-radius: 4px; padding-right: 2px; background-color: lightgreen; width: 14.43%">886</span></td>
+</tr>
+<tr class="even">
+<td align="center">Delegado Francischini</td>
+<td align="center">Direita</td>
+<td align="center">1.036.766</td>
+<td align="center">3.760.147</td>
+<td align="center"><span style="display: inline-block; direction: rtl; border-radius: 4px; padding-right: 2px; background-color: lightgreen; width: 18.48%">1135</span></td>
+</tr>
+<tr class="odd">
+<td align="center">O Antagonista</td>
+<td align="center">Direita</td>
+<td align="center">657.416</td>
+<td align="center">3.704.912</td>
+<td align="center"><span style="display: inline-block; direction: rtl; border-radius: 4px; padding-right: 2px; background-color: lightgreen; width: 97.62%">5995</span></td>
+</tr>
+<tr class="even">
+<td align="center">Avança Brasil Maçons.BR</td>
+<td align="center">Direita</td>
+<td align="center">814.737</td>
+<td align="center">3.460.900</td>
+<td align="center"><span style="display: inline-block; direction: rtl; border-radius: 4px; padding-right: 2px; background-color: lightgreen; width: 21.79%">1338</span></td>
+</tr>
+<tr class="odd">
+<td align="center">G1 - O Portal de Notícias da Globo</td>
+<td align="center">Imprensa</td>
+<td align="center">8.653.826</td>
+<td align="center">3.333.818</td>
+<td align="center"><span style="display: inline-block; direction: rtl; border-radius: 4px; padding-right: 2px; background-color: lightgreen; width: 59.44%">3650</span></td>
+</tr>
+<tr class="even">
+<td align="center">PROZAC virtual</td>
+<td align="center">Esquerda</td>
+<td align="center">1.414.235</td>
+<td align="center">2.896.808</td>
+<td align="center"><span style="display: inline-block; direction: rtl; border-radius: 4px; padding-right: 2px; background-color: lightgreen; width: 16.27%">999</span></td>
+</tr>
+<tr class="odd">
+<td align="center">Estadão</td>
+<td align="center">Imprensa</td>
+<td align="center">3.416.805</td>
+<td align="center">2.856.714</td>
+<td align="center"><span style="display: inline-block; direction: rtl; border-radius: 4px; padding-right: 2px; background-color: lightgreen; width: 89.22%">5479</span></td>
+</tr>
+<tr class="even">
+<td align="center">Revista ISTOÉ</td>
+<td align="center">Imprensa</td>
+<td align="center">2.293.101</td>
+<td align="center">2.634.697</td>
+<td align="center"><span style="display: inline-block; direction: rtl; border-radius: 4px; padding-right: 2px; background-color: lightgreen; width: 50.87%">3124</span></td>
+</tr>
+<tr class="odd">
+<td align="center">Meu Professor de História</td>
+<td align="center">Esquerda</td>
+<td align="center">477.908</td>
+<td align="center">2.622.817</td>
+<td align="center"><span style="display: inline-block; direction: rtl; border-radius: 4px; padding-right: 2px; background-color: lightgreen; width: 24.44%">1501</span></td>
+</tr>
+<tr class="even">
+<td align="center">Partido dos Trabalhadores</td>
+<td align="center">Esquerda</td>
+<td align="center">1.169.835</td>
+<td align="center">2.601.766</td>
+<td align="center"><span style="display: inline-block; direction: rtl; border-radius: 4px; padding-right: 2px; background-color: lightgreen; width: 21.71%">1333</span></td>
+</tr>
+<tr class="odd">
+<td align="center">Exame</td>
+<td align="center">Imprensa</td>
+<td align="center">4.003.281</td>
+<td align="center">2.567.277</td>
+<td align="center"><span style="display: inline-block; direction: rtl; border-radius: 4px; padding-right: 2px; background-color: lightgreen; width: 72.55%">4455</span></td>
+</tr>
+<tr class="even">
+<td align="center">Revista Fórum</td>
+<td align="center">Esquerda</td>
+<td align="center">666.212</td>
+<td align="center">2.529.496</td>
+<td align="center"><span style="display: inline-block; direction: rtl; border-radius: 4px; padding-right: 2px; background-color: lightgreen; width: 51.41%">3157</span></td>
+</tr>
+<tr class="odd">
+<td align="center">Manuela D’Ávila</td>
+<td align="center">Esquerda</td>
+<td align="center">271.487</td>
+<td align="center">2.411.287</td>
+<td align="center"><span style="display: inline-block; direction: rtl; border-radius: 4px; padding-right: 2px; background-color: lightgreen; width: 24.15%">1483</span></td>
+</tr>
+<tr class="even">
+<td align="center">Jovem Pan News</td>
+<td align="center">Imprensa</td>
+<td align="center">1.032.207</td>
+<td align="center">2.016.585</td>
+<td align="center"><span style="display: inline-block; direction: rtl; border-radius: 4px; padding-right: 2px; background-color: lightgreen; width: 42.13%">2587</span></td>
+</tr>
+<tr class="odd">
+<td align="center">CartaCapital</td>
+<td align="center">Imprensa</td>
+<td align="center">1.809.585</td>
+<td align="center">1.463.722</td>
+<td align="center"><span style="display: inline-block; direction: rtl; border-radius: 4px; padding-right: 2px; background-color: lightgreen; width: 37.11%">2279</span></td>
+</tr>
+<tr class="even">
+<td align="center">Portal R7</td>
+<td align="center">Imprensa</td>
+<td align="center">13.029.431</td>
+<td align="center">1.460.648</td>
+<td align="center"><span style="display: inline-block; direction: rtl; border-radius: 4px; padding-right: 2px; background-color: lightgreen; width: 78.47%">4819</span></td>
+</tr>
+</tbody>
+</table>
+<p>Já podemos identificar que nenhuma das cinco páginas com total de compartilhamentos mais alto no Facebook entre agosto e outubro de 2018 foi da imprensa jornalística. O <code>Portal UOL</code> aparece somente em sexto lugar, porém, com um volume muito alto de posts. Se comparado com <code>Jair Bolsonaro</code> que precisou de apenas 533 publicações para atingir quase 15 milhões de compartilhamentos, percebemos uma discrepância significativa.</p>
+</div>
+<div id="resultados" class="section level2">
+<h2>Resultados</h2>
+<p>Para compreender melhor as frequências, a <strong>Figura 1</strong> agrega os dados, calculando o total e a proporção de compartilhamentos de cada categoria.</p>
+<div id="htmlwidget-1" style="width:672px;height:480px;" class="girafe html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"html":"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" id=\"svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db\" viewBox=\"0 0 504.00 432.00\">\n  <g>\n    <defs>\n      <clipPath id=\"svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_cl_1\">\n        <rect x=\"0.00\" y=\"0.00\" width=\"504.00\" height=\"432.00\"/>\n      <\/clipPath>\n    <\/defs>\n    <rect x=\"0.00\" y=\"0.00\" width=\"504.00\" height=\"432.00\" id=\"svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_el_1\" clip-path=\"url(#svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_cl_1)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"0.75\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/>\n    <defs>\n      <clipPath id=\"svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_cl_2\">\n        <rect x=\"0.00\" y=\"0.00\" width=\"504.00\" height=\"432.00\"/>\n      <\/clipPath>\n    <\/defs>\n    <defs>\n      <clipPath id=\"svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_cl_3\">\n        <rect x=\"127.83\" y=\"105.04\" width=\"346.28\" height=\"236.09\"/>\n      <\/clipPath>\n    <\/defs>\n    <polyline points=\"127.83,296.86 474.11,296.86\" id=\"svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_el_2\" clip-path=\"url(#svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_cl_3)\" fill=\"none\" stroke-width=\"0.426791\" stroke=\"#CCCCCC\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"127.83,223.08 474.11,223.08\" id=\"svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_el_3\" clip-path=\"url(#svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_cl_3)\" fill=\"none\" stroke-width=\"0.426791\" stroke=\"#CCCCCC\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"127.83,149.31 474.11,149.31\" id=\"svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_el_4\" clip-path=\"url(#svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_cl_3)\" fill=\"none\" stroke-width=\"0.426791\" stroke=\"#CCCCCC\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <rect x=\"131.23\" y=\"263.66\" width=\"40.42\" height=\"66.40\" id=\"svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_el_5\" clip-path=\"url(#svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_cl_3)\" fill=\"#4B82DB\" fill-opacity=\"0.8\" stroke=\"none\" data-id=\"Imprensa\" title=\"11.91%\"/>\n    <rect x=\"131.23\" y=\"189.88\" width=\"100.44\" height=\"66.40\" id=\"svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_el_6\" clip-path=\"url(#svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_cl_3)\" fill=\"#4B82DB\" fill-opacity=\"0.8\" stroke=\"none\" data-id=\"Esquerda\" title=\"29.59%\"/>\n    <rect x=\"131.23\" y=\"116.11\" width=\"198.63\" height=\"66.40\" id=\"svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_el_7\" clip-path=\"url(#svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_cl_3)\" fill=\"#4B82DB\" fill-opacity=\"0.8\" stroke=\"none\" data-id=\"Direita\" title=\"58.51%\"/>\n    <g clip-path=\"url(#svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_cl_3)\">\n      <text x=\"339.50\" y=\"144.15\" id=\"svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_el_8\" font-size=\"10.67pt\" font-weight=\"bold\" fill=\"#3D3D3D\" fill-opacity=\"1\" font-family=\"Arial\">58.51%<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_cl_3)\">\n      <text x=\"347.49\" y=\"164.64\" id=\"svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_el_9\" font-size=\"10.67pt\" font-weight=\"bold\" fill=\"#3D3D3D\" fill-opacity=\"1\" font-family=\"Arial\">n = 3.574.855<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_cl_3)\">\n      <text x=\"241.32\" y=\"217.93\" id=\"svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_el_10\" font-size=\"10.67pt\" font-weight=\"bold\" fill=\"#3D3D3D\" fill-opacity=\"1\" font-family=\"Arial\">29.59%<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_cl_3)\">\n      <text x=\"249.31\" y=\"238.42\" id=\"svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_el_11\" font-size=\"10.67pt\" font-weight=\"bold\" fill=\"#3D3D3D\" fill-opacity=\"1\" font-family=\"Arial\">n = 1.807.698<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_cl_3)\">\n      <text x=\"181.30\" y=\"291.71\" id=\"svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_el_12\" font-size=\"10.67pt\" font-weight=\"bold\" fill=\"#3D3D3D\" fill-opacity=\"1\" font-family=\"Arial\">11.91%<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_cl_3)\">\n      <text x=\"188.50\" y=\"312.20\" id=\"svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_el_13\" font-size=\"10.67pt\" font-weight=\"bold\" fill=\"#3D3D3D\" fill-opacity=\"1\" font-family=\"Arial\">n = 727.5369<\/text>\n    <\/g>\n    <defs>\n      <clipPath id=\"svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_cl_4\">\n        <rect x=\"0.00\" y=\"0.00\" width=\"504.00\" height=\"432.00\"/>\n      <\/clipPath>\n    <\/defs>\n    <g clip-path=\"url(#svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_cl_4)\">\n      <text x=\"51.24\" y=\"303.97\" id=\"svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_el_14\" font-size=\"15.00pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Roboto Condensed\">Imprensa<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_cl_4)\">\n      <text x=\"51.30\" y=\"230.19\" id=\"svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_el_15\" font-size=\"15.00pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Roboto Condensed\">Esquerda<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_cl_4)\">\n      <text x=\"73.46\" y=\"156.41\" id=\"svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_el_16\" font-size=\"15.00pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Roboto Condensed\">Direita<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_cl_4)\">\n      <text x=\"119.96\" y=\"358.21\" id=\"svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_el_17\" font-size=\"15.00pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Roboto Condensed\">0%<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_cl_4)\">\n      <text x=\"199.90\" y=\"358.21\" id=\"svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_el_18\" font-size=\"15.00pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Roboto Condensed\">25%<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_cl_4)\">\n      <text x=\"284.77\" y=\"358.21\" id=\"svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_el_19\" font-size=\"15.00pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Roboto Condensed\">50%<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_cl_4)\">\n      <text x=\"369.64\" y=\"358.21\" id=\"svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_el_20\" font-size=\"15.00pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Roboto Condensed\">75%<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_cl_4)\">\n      <text x=\"449.58\" y=\"358.21\" id=\"svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_el_21\" font-size=\"15.00pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Roboto Condensed\">100%<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_cl_4)\">\n      <text x=\"127.83\" y=\"71.99\" id=\"svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_el_22\" font-size=\"10.50pt\" font-style=\"italic\" font-family=\"Roboto Condensed\">Jornais tem a menor proporção de compartilhamentos<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_cl_4)\">\n      <text x=\"127.83\" y=\"87.11\" id=\"svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_el_23\" font-size=\"10.50pt\" font-style=\"italic\" font-family=\"Roboto Condensed\"> Páginas de direita e de esquerda são as mais compartilhadas<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_cl_4)\">\n      <text x=\"127.83\" y=\"46.95\" id=\"svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_el_24\" font-size=\"18.00pt\" font-weight=\"bold\" font-family=\"Roboto Condensed\">Declínio da visibilidade da imprensa<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_cl_4)\">\n      <text x=\"325.07\" y=\"400.19\" id=\"svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db_el_25\" font-size=\"6.75pt\" font-family=\"Roboto Condensed\">Dados extraídos pela Facebook Graph API<\/text>\n    <\/g>\n  <\/g>\n<\/svg>\n","js":null,"uid":"svg_5b285268-6863-11ea-ba8c-8d3a7c6b27db","ratio":1.16666666666667,"settings":{"tooltip":{"css":" .tooltip_SVGID_ { background-color:white; ; position:absolute;pointer-events:none;z-index:999;}\n","offx":10,"offy":0,"use_cursor_pos":true,"opacity":0.9,"usefill":false,"usestroke":false,"delay":{"over":200,"out":500}},"hover":{"css":" .hover_SVGID_ { fill:skyblue; }\n"},"hoverkey":{"css":" .hover_key_SVGID_ { stroke:red; }\n"},"hovertheme":{"css":" .hover_theme_SVGID_ { fill:green; }\n"},"zoom":{"min":1,"max":1},"capture":{"css":" .selected_SVGID_ { fill:red;stroke:gray; }\n","type":"multiple","only_shiny":true,"selected":[]},"capturekey":{"css":" .selected_key_SVGID_ { stroke:gray; }\n","type":"single","only_shiny":true,"selected":[]},"capturetheme":{"css":" .selected_theme_SVGID_ { stroke:gray; }\n","type":"single","only_shiny":true,"selected":[]},"toolbar":{"position":"topright","saveaspng":true},"sizing":{"rescale":true,"width":1}}},"evals":[],"jsHooks":[]}</script>
+<p>Salta aos olhos o achado que as 10 páginas de direita estudadas atingiram mais da metade de compartilhamentos. Ou seja, conseguiram propagar suas mensagens para mais usuários do que as outras 20 combinadas. As medidas chamam a atenção e ajudam a entender trabalhos anteriores (<a href="http://bibliotecadigital.fgv.br/ojs/index.php/gvexecutivo/article/viewFile/56842/55378"><code>Telles, 2015</code></a>; <a href="http://bibliotecadigital.tse.jus.br/xmlui/handle/bdtse/4823"><code>Alves, 2017</code></a>; <a href="http://bibliotecadigital.tse.jus.br/xmlui/handle/bdtse/4823"><code>Penteado e Lerner, 2018</code></a> ) que falam da ascensão das direitas nas mídias sociais.</p>
+<p>Na <strong>Figura 2</strong> analiso as médias de compartilhamentos, indicando, ainda, as barras de erro.</p>
+<div id="htmlwidget-2" style="width:672px;height:480px;" class="girafe html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2">{"x":{"html":"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" id=\"svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db\" viewBox=\"0 0 504.00 432.00\">\n  <g>\n    <defs>\n      <clipPath id=\"svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_cl_1\">\n        <rect x=\"0.00\" y=\"0.00\" width=\"504.00\" height=\"432.00\"/>\n      <\/clipPath>\n    <\/defs>\n    <rect x=\"0.00\" y=\"0.00\" width=\"504.00\" height=\"432.00\" id=\"svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_el_1\" clip-path=\"url(#svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_cl_1)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"0.75\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/>\n    <defs>\n      <clipPath id=\"svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_cl_2\">\n        <rect x=\"0.00\" y=\"0.00\" width=\"504.00\" height=\"432.00\"/>\n      <\/clipPath>\n    <\/defs>\n    <defs>\n      <clipPath id=\"svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_cl_3\">\n        <rect x=\"127.83\" y=\"97.49\" width=\"346.28\" height=\"193.66\"/>\n      <\/clipPath>\n    <\/defs>\n    <polyline points=\"174.51,291.15 174.51,97.49\" id=\"svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_el_2\" clip-path=\"url(#svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_cl_3)\" fill=\"none\" stroke-width=\"0.426791\" stroke=\"#CCCCCC\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"277.90,291.15 277.90,97.49\" id=\"svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_el_3\" clip-path=\"url(#svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_cl_3)\" fill=\"none\" stroke-width=\"0.426791\" stroke=\"#CCCCCC\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"381.28,291.15 381.28,97.49\" id=\"svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_el_4\" clip-path=\"url(#svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_cl_3)\" fill=\"none\" stroke-width=\"0.426791\" stroke=\"#CCCCCC\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <circle cx=\"440.71\" cy=\"133.80\" r=\"5.07pt\" id=\"svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_el_5\" clip-path=\"url(#svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_cl_3)\" fill=\"#87CEEB\" fill-opacity=\"1\" stroke-width=\"0.708661\" stroke=\"#87CEEB\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"round\" data-id=\"Direita\" title=\"3574.85\"/>\n    <circle cx=\"258.01\" cy=\"194.32\" r=\"5.07pt\" id=\"svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_el_6\" clip-path=\"url(#svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_cl_3)\" fill=\"#87CEEB\" fill-opacity=\"1\" stroke-width=\"0.708661\" stroke=\"#87CEEB\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"round\" data-id=\"Esquerda\" title=\"1807.7\"/>\n    <circle cx=\"146.34\" cy=\"254.84\" r=\"5.07pt\" id=\"svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_el_7\" clip-path=\"url(#svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_cl_3)\" fill=\"#87CEEB\" fill-opacity=\"1\" stroke-width=\"0.708661\" stroke=\"#87CEEB\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"round\" data-id=\"Imprensa\" title=\"727.54\"/>\n    <polyline points=\"458.37,139.85 458.37,127.75\" id=\"svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_el_8\" clip-path=\"url(#svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_cl_3)\" fill=\"none\" stroke-width=\"1.49377\" stroke=\"#87CEEB\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\" data-id=\"Direita\" title=\"Direita\"/>\n    <polyline points=\"458.37,133.80 423.05,133.80\" id=\"svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_el_9\" clip-path=\"url(#svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_cl_3)\" fill=\"none\" stroke-width=\"1.49377\" stroke=\"#87CEEB\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\" data-id=\"Direita\" title=\"Direita\"/>\n    <polyline points=\"423.05,139.85 423.05,127.75\" id=\"svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_el_10\" clip-path=\"url(#svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_cl_3)\" fill=\"none\" stroke-width=\"1.49377\" stroke=\"#87CEEB\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\" data-id=\"Direita\" title=\"Direita\"/>\n    <polyline points=\"266.00,200.37 266.00,188.27\" id=\"svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_el_11\" clip-path=\"url(#svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_cl_3)\" fill=\"none\" stroke-width=\"1.49377\" stroke=\"#87CEEB\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\" data-id=\"Esquerda\" title=\"Esquerda\"/>\n    <polyline points=\"266.00,194.32 250.03,194.32\" id=\"svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_el_12\" clip-path=\"url(#svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_cl_3)\" fill=\"none\" stroke-width=\"1.49377\" stroke=\"#87CEEB\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\" data-id=\"Esquerda\" title=\"Esquerda\"/>\n    <polyline points=\"250.03,200.37 250.03,188.27\" id=\"svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_el_13\" clip-path=\"url(#svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_cl_3)\" fill=\"none\" stroke-width=\"1.49377\" stroke=\"#87CEEB\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\" data-id=\"Esquerda\" title=\"Esquerda\"/>\n    <polyline points=\"149.11,260.89 149.11,248.78\" id=\"svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_el_14\" clip-path=\"url(#svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_cl_3)\" fill=\"none\" stroke-width=\"1.49377\" stroke=\"#87CEEB\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\" data-id=\"Imprensa\" title=\"Imprensa\"/>\n    <polyline points=\"149.11,254.84 143.57,254.84\" id=\"svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_el_15\" clip-path=\"url(#svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_cl_3)\" fill=\"none\" stroke-width=\"1.49377\" stroke=\"#87CEEB\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\" data-id=\"Imprensa\" title=\"Imprensa\"/>\n    <polyline points=\"143.57,260.89 143.57,248.78\" id=\"svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_el_16\" clip-path=\"url(#svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_cl_3)\" fill=\"none\" stroke-width=\"1.49377\" stroke=\"#87CEEB\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\" data-id=\"Imprensa\" title=\"Imprensa\"/>\n    <defs>\n      <clipPath id=\"svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_cl_4\">\n        <rect x=\"0.00\" y=\"0.00\" width=\"504.00\" height=\"432.00\"/>\n      <\/clipPath>\n    <\/defs>\n    <g clip-path=\"url(#svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_cl_4)\">\n      <text x=\"51.24\" y=\"261.95\" id=\"svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_el_17\" font-size=\"15.00pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Roboto Condensed\">Imprensa<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_cl_4)\">\n      <text x=\"51.30\" y=\"201.43\" id=\"svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_el_18\" font-size=\"15.00pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Roboto Condensed\">Esquerda<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_cl_4)\">\n      <text x=\"73.46\" y=\"140.91\" id=\"svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_el_19\" font-size=\"15.00pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Roboto Condensed\">Direita<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_cl_4)\">\n      <text x=\"154.77\" y=\"308.23\" id=\"svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_el_20\" font-size=\"15.00pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Roboto Condensed\">1000<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_cl_4)\">\n      <text x=\"258.15\" y=\"308.23\" id=\"svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_el_21\" font-size=\"15.00pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Roboto Condensed\">2000<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_cl_4)\">\n      <text x=\"361.53\" y=\"308.23\" id=\"svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_el_22\" font-size=\"15.00pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Roboto Condensed\">3000<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_cl_4)\">\n      <text x=\"223.27\" y=\"329.58\" id=\"svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_el_23\" font-size=\"15.00pt\" font-family=\"Roboto Condensed\">Compartilhamentos<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_cl_4)\">\n      <text x=\"127.83\" y=\"65.73\" id=\"svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_el_24\" font-size=\"9.75pt\" font-family=\"Roboto Condensed\">As páginas obtiveram altos valores de disseminação,<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_cl_4)\">\n      <text x=\"127.83\" y=\"79.77\" id=\"svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_el_25\" font-size=\"9.75pt\" font-family=\"Roboto Condensed\">também acima das demais categorias<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_cl_4)\">\n      <text x=\"127.83\" y=\"42.68\" id=\"svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_el_26\" font-size=\"13.50pt\" font-weight=\"bold\" font-family=\"Roboto Condensed\">Direita também possui médias mais altas<\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_cl_4)\">\n      <text x=\"474.11\" y=\"353.76\" id=\"svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_el_27\" font-size=\"10.50pt\" font-family=\"Roboto Condensed\"/>\n    <\/g>\n    <g clip-path=\"url(#svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_cl_4)\">\n      <text x=\"320.85\" y=\"368.88\" id=\"svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_el_28\" font-size=\"10.50pt\" font-family=\"Roboto Condensed\">Fonte: Facebook Graph API <\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_cl_4)\">\n      <text x=\"148.60\" y=\"384.00\" id=\"svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_el_29\" font-size=\"10.50pt\" font-family=\"Roboto Condensed\">Nota: Barras de erro representam o intervalo de confiança, <\/text>\n    <\/g>\n    <g clip-path=\"url(#svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_cl_4)\">\n      <text x=\"256.51\" y=\"399.12\" id=\"svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db_el_30\" font-size=\"10.50pt\" font-family=\"Roboto Condensed\">medido como duas vezes o erro padrão<\/text>\n    <\/g>\n  <\/g>\n<\/svg>\n","js":null,"uid":"svg_5b7c04e4-6863-11ea-ba8c-8d3a7c6b27db","ratio":1.16666666666667,"settings":{"tooltip":{"css":" .tooltip_SVGID_ { background-color:white; ; position:absolute;pointer-events:none;z-index:999;}\n","offx":10,"offy":0,"use_cursor_pos":true,"opacity":0.9,"usefill":false,"usestroke":false,"delay":{"over":200,"out":500}},"hover":{"css":" .hover_SVGID_ { fill:aquamarine; }\n"},"hoverkey":{"css":" .hover_key_SVGID_ { stroke:red; }\n"},"hovertheme":{"css":" .hover_theme_SVGID_ { fill:green; }\n"},"zoom":{"min":1,"max":1},"capture":{"css":" .selected_SVGID_ { fill:red;stroke:gray; }\n","type":"multiple","only_shiny":true,"selected":[]},"capturekey":{"css":" .selected_key_SVGID_ { stroke:gray; }\n","type":"single","only_shiny":true,"selected":[]},"capturetheme":{"css":" .selected_theme_SVGID_ { stroke:gray; }\n","type":"single","only_shiny":true,"selected":[]},"toolbar":{"position":"topright","saveaspng":true},"sizing":{"rescale":true,"width":1}}},"evals":[],"jsHooks":[]}</script>
+<p>Novamente, também encontramos grande regularidade nos compartilhamentos das páginas de direita. Mesmo tendo rotinas produtivas mais organizadas e dedicando recursos para a criação de conteúdo e gestão de mídias sociais<a href="https://journals.sagepub.com/doi/abs/10.1177/1461444818797610"><code>Alves et al., 2019</code></a>, a imprensa jornalística não recebe grande audiência na plataforma.</p>
+</div>
+<div id="implicações" class="section level2">
+<h2>Implicações</h2>
+<p>{{% alert note %}}
+* Por que esses resultados são importantes?
+{{% /alert %}}</p>
+<p>A comunicação político-eleitoral está estruturada em torno de paradigmas fundamentais, entre eles, a centralidade da mídia como espaço de construção das imagens políticas. Esse espaço possui lógicas de atuação institucionalizadas, de um lado, pela cobertura jornalística dos eventos e temas e, de outro, pelos partidos que distribuem tempo e recurso de campanha entre os candidatos, particularmente, o acesso ao Horário Gratuito de Propaganda Eleitoral.</p>
+<p>Até recentemente, pesquisas sobre a disputa pela visibilidade na internet vem demonstrando que a imprensa jornalística colonizou a web e possui os portais informacionais mais acessados <a href="https://press.princeton.edu/books/paperback/9780691138688/the-myth-of-digital-democracy"><code>Hindman, 2008</code></a>; e que, entre os políticos, aqueles que ocupam posições de liderança, cargos de destaque e que possuem carreira mais sólida também angariam mais atenção nas mídias sociais <a href="https://journals.sagepub.com/doi/10.1177/2158244014559015"><code>Larsson e Moe, 2014</code></a>.</p>
+<p>Os resultados empíricos dessa pesquisa contribuem para a compreensão de um quadro mais complexo, no qual atores radicalizados capturam a visibilidade e engajam bases de seguidores no compartilhamento das publicações com maior alcance que a imprensa tradicional.</p>
+</div>
