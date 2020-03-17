@@ -47,7 +47,7 @@ opts_chunk$set(warning = FALSE, message = F, echo = F, fig.align = "center") # i
 
 Esse post contém o material para reprodução do seguinte artigo acadêmico:
 
-* [Perda da hegemonia da imprensa - a disputa pela visibilidade na eleição de 2018](https://periodicos.ufjf.br/index.php/lumina/article/view/28668/)
+* [Perda da hegemonia da imprensa - a disputa pela visibilidade na eleição de 2018](https://periodicos.ufjf.br/index.php/lumina/article/view/28668/), escrito em coautoria com [Afonso de Albuquerque](https://scholar.google.com.br/citations?user=S-P0ltwAAAAJ&hl=pt-BR)
 * O estudo empírico é um primeiro recorte de um estudo mais amplo que realizei em minha tese de doutorado [Desarranjo da visibilidade, desordem informacional e polarização no Brasil entre 2013 e 2018](https://www.researchgate.net/profile/Marcelo_Dos_Santos_Junior) 
 * Os dados e script analítico estão disponíveis em meu [`Github`](https://github.com/marceloalvesuff/Lumina-2019)
 
