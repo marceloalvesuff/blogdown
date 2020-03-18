@@ -1,0 +1,165 @@
+---
+title: "Como coletar dados do Facebook com Facepager e R [funcionando]"
+author: "Marcelo Alves"
+date: "2020-03-18"
+tags: [tutorial]
+categories:
+  - tutorial
+  - facebook
+  - coleta
+summary: Guia definitivo com passo a passo para coletar dados do Facebook depois da desativação do Netvizz
+output: 
+  blogdown::html_document:
+    number_sections: true
+   
+    toc_depth: 1
+    fig_width: 12 # comprimento da figura
+    fig_height: 8 # altura da figura
+
+---
+
+```{r setup, include=FALSE}
+options(scipen = 999) # codigo para retirar formatacao cientifica dos numeros
+### inserir chunk = Ctrl + Alt + I 
+
+library(details)
+Sys.setlocale("LC_TIME", 'portuguese')
+
+
+```
+
+
+## Apresentação
+
+Nos últimos anos, a extração de dados públicos do Facebook para pesquisa aplicada se tornou quase impossível. Em decorrência do escândalo do vazamento de dados pessoais, a plataforma fechou o acesso a posts públicos. O [`Netvizz`](https://twitter.com/riederb/status/1164167809573826560), até então o aplicativo mais utilizado para baixar as publicações de candidatos, veículos da imprensa, movimentos sociais, entre outros, foi descontinuado. 
+
+Esse post tem dois objetivos: 1) contextualizar o momento atual das políticas de acesso aos dados das midias sociais; e 2) criar um passo a passo, ainda em funcionamento, para coletar publicações do Facebook. Para as atividades práticas, precisaremos de:
+
+* Instação do software `Facepager` que pode ser baixado pelo [`Github`](https://github.com/strohne/Facepager)
+* Instalação do [`R`](https://cran.r-project.org/bin/windows/base/) e do [`RStudio`](https://rstudio.com/products/rstudio/download/)
+* A linguagem estatística R será utilizada para automatizar o processo de extração. Um guia de instalação pode ser consultado no site [`Curso-R`](https://www.curso-r.com/material/instalacao/)
+
+
+## O que é
+
+A extração de dados das mídias sociais se dá por meio do que se chama Interface de Programação de Aplicativos (do original `Application Programming Interface – API`). Provavelmente, você já ouviu falar das APIs. Basicamente, elas são canais de comunicação que permitem a usuários e aplicativos se conectarem aos sites para requisitar dados hospedados em seus servidores. Os aplicativos acadêmicos como o **Netvizz** e alguns softwares plenos de monitoramento nada mais são do que interfaces que se conectam às APIs e facilitam o processo de coleta de dados.
+
+As APIs são, de um lado, um conjunto de comandos técnicos para realizar ações, mas também representam  as políticas empresariais do Facebook para acesso ao seu banco de dados [`Caplan e boyd, 2018`](https://journals.sagepub.com/doi/full/10.1177/2053951718757253). Ou seja, as APIs tendem a ser alteradas constantemente, de acordo com as políticas corporativas do Facebook. 
+
+## Contexto atual - APIcalypse
+
+Assim, há questões de acesso aos dados que contrapõem o interesse acadêmico e as políticas dos provedores, que são as grandes empresas de tecnologia, chamadas de [`Big Tech`](https://www.theguardian.com/commentisfree/2019/may/11/big-tech-progressive-vision-silicon-valley). Nos últimos anos, esses procedimentos de coleta de informações mudaram radicalmente. [`Meirelles (2019)`](https://www.ibpad.com.br/o-que-fazemos/publicacoes/historico-das-apis-no-monitoramento-e-pesquisa-em-midias-sociais/) traçou o histórico das alterações nas APIs, indo de um **nascimento otimista** (2006-2010) ao contexto atual de desafios e restrições.
+
+O acesso a essas fontes de dados é tutelado pelas empresas que gerenciam as plataformas de mídias sociais. No início de 2018, fustigado pelo escândalo do vazamento de informações pessoais pela **Cambridge Analytica**, o Facebook decidiu interromper a extração de posts de páginas públicas. Em 2013 e 2015, a gigante que monopoliza o mercado de mídias sociais já havia descontinuado os pontos de extração de dados de perfis pessoais. Dessa vez, resolveu submeter a coleta a um processo de revisão interna do próprio Facebook. Bernhard Rieder, criador do aplicativo mais usado no mundo para pesquisa no Facebook, o Netvizz, fez [`duras críticas`](http://thepoliticsofsystems.net/2018/08/facebooks-app-review-and-how-independent-research-just-got-a-lot-harder/) às políticas da companhia, avessas ao escrutínio científico independente. Essa postura opaca diminui dramaticamente o accountability das práticas maliciosas nesse espaço.
+
+Pesquisadores renomados escreveram um  [`manifesto`](https://www.theguardian.com/technology/2018/apr/25/facebooks-data-changes-will-hamper-research-and-oversight-academics-warn) e colheram centenas de assinaturas **contra o fechamento das fontes de dados do Facebook e do Instagram**, plataforma controlada pela empresa. 
+
+Em mais uma peça importante da discussão acadêmica, [`Freelon (2019)`](https://osf.io/preprints/socarxiv/56f4q), liderança na **virada computacional das ciências sociais**, fez uma discussão sobre os desafios atuais. Ele argumenta que entramos numa sombria e incerta era da pesquisa **pós-API**. Com o colapso e fechamento generalizado das interfaces de coleta, seria necessário investir em outras metodologias de pesquisa e, eventualmente, implementar rotinas de raspagem de dados não sensíveis. 
+
+
+## Os procedimentos atuais de coleta
+
+
+A principal modificação do Facebook em 2018 foi determinar um estrito processo de verificaçao dos aplicativos para obter a chave de acesso à API. Um canal que era público e disponível para todos se tornou restrito, prioritariamente atendendo a demandas de anunciantes da plataforma. Com isso, o **netvizz foi desautorizado** e, consequentemente, desativado em setembro de 2019. 
+
+{{% alert note %}}
+A boa notícia é que o **Facepager**, software alemão desenvolvido por `Jakob Jünger` e colegas, conseguiu a permissão em dezembro de 2019. 
+{{% /alert %}}
+
+Nesse tutorial, explicarei como integrar o Facepager e o R para automatizar os procedimentos de coleta de dados do Facebook. Devo notar, todavia, que a cessão de dados pelo Facebook está **extremamente instável**. Em sala de aula, aconteceu de alguns estudantes não conseguirem baixar na primeira tentativa e funcionar algumas horas depois. 
+
+### Autorização pelo Facepager
+
+O primeiro passo é conseguir a chave de autorização `access_token` pelo Facepager. Para isso, faremos os seguintes passos pelo app:
+
+1. New Database - cria um banco de dados `.db` no diretório;
+2. Add Nodes - adiciona um nó para coleta de dados. Na caixa de texto, inserir `lula` por ser o username do ex-presidente no Facebook;
+3. Login to Facebook - preencher com login e senha para obter a permissão
+4. Clicar em lula - às vezes não funciona se o node não estiver selecionado
+5. Clicar em Fetch Data - rodar a primeira coleta
+6. Copiar o status log - selecionar o texto de resposta e identificar o seguinte código `access_token=XXXX`
+7. Todo o texto depois de `access_token=` é seu código de autorização. Copie para inserir no `R`
+
+Seguir como na imagem:
+![Obter token no Facepager](/img/facepager.png)
+
+Finalizamos as etapas no Facepager. Caso não tenha familiaridade com o R, você pode realizar a coleta no software. Fiz um  [`tutorial`](https://pt.slideshare.net/MarceloAlves178/minerao-de-dados-com-facepager) sobre isso.
+
+### Automatização pelo Rfacebook
+
+A partir daqui, faremos as consultas direto pelo RStudio com nosso `access_token` vinculado ao Facepager na etapa anterior.
+
+Precisamos instalar o excelente pacote [`Rfacebook`](https://github.com/pablobarbera/Rfacebook), desenvolvido por **Pablo Barberá**
+
+<details>
+<summary> Clicar para exibir código
+</summary>
+<p>
+```{r instalar,  details, eval=F}
+install.packages("Rfacebook") # pacote de conexao ao facebook
+library(Rfacebook) # carregar o pacote na sessão atual
+```
+</details>
+
+
+Em seguida, criamos um objeto com o código do token
+
+<details>
+<summary> Clicar para exibir código
+</summary>
+<p>
+```{r token, details, details.summary = 'Clicar para ver o código', eval=F}
+token <- "XXXX" # <- alterar o XXXX pelo seu código
+```
+</details>
+
+
+Agora, podemos rodar a função para acessar a API e coletar os dados
+
+<details>
+<summary> Clicar para exibir código
+</summary>
+<p>
+```{r coleta, details,details.summary = 'Clicar para ver o código', eval=F}
+posts <- getPage(page = "estadao", # username da página - ex: facebook.com/estadao
+                 token = token, 
+                 n = 10, # máximo de posts a serem coletados
+                 reactions = F, # se baixa também as reações
+                 since = "2019-12-01", # desde
+                 until = "2019-12-30") # até
+```
+</details>
+
+
+No R, a varíavel posts guarda o retorno da extração.
+Ela pode ser exportada para `csv` com o código:
+
+<details>
+<summary> Clicar para exibir código
+</summary>
+<p>
+```{r exportar, details,details.summary = 'Clicar para ver o código', eval=F}
+write.csv2(posts, paste0("extração_face_", Sys.Date(), ".csv"))
+```
+</details>
+
+
+Pronto!
+
+Se tudo ocorreu bem, ao final desse longo e complexo tutorial, teremos acesso à **Public Posts API do Facebook**.
+Atualmente, há poucos pontos de coleta. É possível extrair as postagens de páginas públicas, seus comentários, quais outras páginas elas seguem e o total de interações de links externos no Facebook.
+
+Em meu [`Github`](https://github.com/marceloalvesuff/IE_2019/blob/master/data/IE_5_Facebook_Facepager.R), disponibilizei uma versão expandida dos códigos desse tutorial, contemplando:
+
+1. `Extração de múltiplas páginas`
+2. `Aferição de medidas de interação de URLs`
+3. `Bola de neve de following network`
+4. `Comentários`
+
+Caso alguma parte desse passo a passo não tenha funcionado corretamente, não deixe de mandar uma mensagem relatando o problema.
+
+## Considerações finais
+
+A cada transformação da API, somos lembrados que as “redes sociais” são **plataformas empresariais** que detém um oligopólio sobre a gestão, uso e análise de nossos dados. Essas implementações visam, de um lado, proteger a privacidade dos usuários, e de outro, **controlar ainda mais o acesso**. Na prática, isso gera uma **nova assimetria de poder** entre quem pode ou não realizar pesquisas e se beneficiar dos insights de dados digitais, na medida em que empresas sempre poderão comprar os dados de algum revendedor, autorizado ou não, pelo Facebook.
+
+O caminho para fazer pesquisa é aperfeiçoar os métodos de extração e de composição de amostra em universos digitais. Além disso, é fundamental debater a **economia política da internet** e aprofundar o conhecimento teórico sobre o **direito a acesso aos dados**. Principalmente para os fins de pesquisa, institutos acadêmicos podem se organizar para pressionar o Facebook para gerar **APIs Universitárias**, com acesso a dados anonimizados para fins de avanço da literatura especializada. 

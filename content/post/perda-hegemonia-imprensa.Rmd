@@ -2,11 +2,15 @@
 title: "Perda da hegemonia da imprensa - a disputa pela visibilidade na eleição de 2018"
 author: "Marcelo Alves"
 date: "2020-03-17"
+tags: [pesquisa]
+categories:
+  - pesquisa
+  - reprodução
+  - plataformização
+summary: Post explicativo e material para reprodução do artigo publicado pela Revista Lumina
 output: 
   blogdown::html_document:
-    toc: true # table of contents
     number_sections: true
-    summary: Post explicativo e material para reprodução do artigo publicado pela Revista Lumina
     toc_depth: 1
     fig_width: 12 # comprimento da figura
     fig_height: 8 # altura da figura
@@ -39,17 +43,19 @@ tema <- theme(plot.title = element_text(colour="#2d2d2d",size=28, face = "bold",
    # panel.grid.major.x=element_blank(),
     panel.grid.minor.y=element_blank())
 
-opts_chunk$set(warning = FALSE, message = F, echo = F, fig.align = "center") # impedir que o documento exiba avisos de warning
+opts_chunk$set(warning = FALSE, message = F, echo = T, fig.align = "center") # impedir que o documento exiba avisos de warning
 
 ```
 
-## Apresentaçao
+
+
+## Apresentação
 
 Esse post contém o material para reprodução do seguinte artigo acadêmico:
 
 * [Perda da hegemonia da imprensa - a disputa pela visibilidade na eleição de 2018](https://periodicos.ufjf.br/index.php/lumina/article/view/28668/), escrito em coautoria com [Afonso de Albuquerque](https://scholar.google.com.br/citations?user=S-P0ltwAAAAJ&hl=pt-BR)
-* O estudo empírico é um primeiro recorte de um estudo mais amplo que realizei em minha tese de doutorado [Desarranjo da visibilidade, desordem informacional e polarização no Brasil entre 2013 e 2018](https://www.researchgate.net/profile/Marcelo_Dos_Santos_Junior) 
-* Os dados e script analítico estão disponíveis em meu [`Github`](https://github.com/marceloalvesuff/Lumina-2019)
+* O estudo empírico é um primeiro recorte de uma investigação mais ampla que realizei em minha tese de doutorado [Desarranjo da visibilidade, desordem informacional e polarização no Brasil entre 2013 e 2018](https://www.researchgate.net/profile/Marcelo_Dos_Santos_Junior) 
+* Os dados e script em linguagem `R` estão disponíveis em meu [`Github`](https://github.com/marceloalvesuff/Lumina-2019)
 
 ## Problema
 
@@ -63,7 +69,7 @@ Outro ponto importante do relatório é que o **Facebook** continua sendo o apli
 A ideia principal do artigo é a seguinte:
 
 {{% alert note %}}
-Considerando que o Facebook possui dinâmicas próprias de circulação de conteúdos, influenciada pelos algoritmos e pela curadoria social das pessoas [`Benkler et al., 2018`](https://www.oxfordscholarship.com/view/10.1093/oso/9780190923624.001.0001/oso-9780190923624), quais foram os atores que tiveram mais visibilidade na eleição de 2018?
+Considerando que o Facebook possui dinâmicas próprias de circulação de conteúdos, influenciadas pelos algoritmos e pela curadoria social das pessoas [`Benkler et al., 2018`](https://www.oxfordscholarship.com/view/10.1093/oso/9780190923624.001.0001/oso-9780190923624), quais foram os atores que tiveram mais visibilidade na eleição de 2018?
 {{% /alert %}}
 
 A proposta do estudo é lançar um olhar ainda inicial sobre como as publicações sobre política se disseminam na plataforma. Além disso, dialogo com trabalhos sobre [`desinformação`](http://www.scielo.br/scielo.php?pid=S1982-25532019000200031&script=sci_arttext), [`polarização`](http://ctpol.unb.br/compolitica2019/GT6/gt6_Goya_Fiacadori_Santos.pdf) e [`fragmentação do sistema midiático`](https://bdtd.ucb.br/index.php/esf/article/view/10387) ao comparar a posição da imprensa tradicional em relação a atores políticos, iniciativas apócrifas para guerrilha informacional e movimentos sociais de esquerda e de direita. 
@@ -72,8 +78,8 @@ A proposta do estudo é lançar um olhar ainda inicial sobre como as publicaçõ
 
 Para entender o que aconteceu, fiz um recorte das 30 páginas mais compartilhadas de três categorias: 
 
-* **imprensa**, 
-* **direita** e 
+* **imprensa**; 
+* **direita**; e 
 * **esquerda**.
 
 As classificações foram realizadas combinando técnicas de `análise de redes sociais` e `análise de conteúdo` durante a pesquisa de minha tese de doutorado. 
@@ -134,7 +140,7 @@ girafe(ggobj = a,
 
 ```
 
-Salta aos olhos o achado que as 10 páginas de direita estudadas atingiram mais da metade de compartilhamentos. Ou seja, conseguiram propagar suas mensagens para mais usuários do que as outras 20 combinadas. As medidas chamam a atenção e ajudam a entender trabalhos anteriores ([`Telles, 2015`](http://bibliotecadigital.fgv.br/ojs/index.php/gvexecutivo/article/viewFile/56842/55378); [`Alves, 2017`](http://bibliotecadigital.tse.jus.br/xmlui/handle/bdtse/4823); [`Penteado e Lerner, 2018`](http://bibliotecadigital.tse.jus.br/xmlui/handle/bdtse/4823) ) que falam da ascensão das direitas nas mídias sociais.
+Salta aos olhos o achado que as 10 páginas de direita estudadas atingiram mais da metade de compartilhamentos. Ou seja, conseguiram propagar suas mensagens para mais usuários do que as outras 20 combinadas. As medidas chamam a atenção e ajudam a entender trabalhos anteriores ([`Telles, 2015`](http://bibliotecadigital.fgv.br/ojs/index.php/gvexecutivo/article/viewFile/56842/55378); [`Alves, 2017`](http://bibliotecadigital.tse.jus.br/xmlui/handle/bdtse/4823); [`Penteado e Lerner, 2018`](http://bibliotecadigital.tse.jus.br/xmlui/handle/bdtse/4823) ) que abordagem a ascensão das direitas nas mídias sociais.
 
 Na **Figura 2** analiso as médias de compartilhamentos, indicando, ainda, as barras de erro.
 
@@ -170,7 +176,7 @@ girafe(ggobj =d,
 
 ```
 
-Novamente, também encontramos grande regularidade nos compartilhamentos das páginas de direita. Mesmo tendo rotinas produtivas mais organizadas e dedicando recursos para a criação de conteúdo e gestão de mídias sociais[`Alves et al., 2019`](https://journals.sagepub.com/doi/abs/10.1177/1461444818797610), a imprensa jornalística não recebe grande audiência na plataforma.
+Novamente, também encontramos grande regularidade nos compartilhamentos das páginas de direita. Mesmo tendo rotinas produtivas mais organizadas e dedicando recursos para a criação de conteúdo e gestão de mídias sociais [`Alves et al., 2019`](https://journals.sagepub.com/doi/abs/10.1177/1461444818797610), a imprensa jornalística não recebe grande audiência na plataforma.
 
 ## Implicações
 

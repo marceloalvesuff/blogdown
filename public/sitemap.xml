@@ -28,12 +28,67 @@
   </url>
   
   <url>
+    <loc>/categories/</loc>
+    <lastmod>2020-03-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/coleta/</loc>
+    <lastmod>2020-03-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/guia-coleta-dados-facebook/guia-coleta-dados-facebook/</loc>
+    <lastmod>2020-03-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/facebook/</loc>
+    <lastmod>2020-03-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/</loc>
+    <lastmod>2020-03-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
+    <lastmod>2020-03-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/tutorial/</loc>
+    <lastmod>2020-03-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/tutorial/</loc>
+    <lastmod>2020-03-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/post/perda-hegemonia-imprensa/</loc>
     <lastmod>2020-03-17T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/post/</loc>
+    <loc>/tags/pesquisa/</loc>
+    <lastmod>2020-03-17T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/pesquisa/</loc>
+    <lastmod>2020-03-17T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/plataformizacao/</loc>
+    <lastmod>2020-03-17T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/reproducao/</loc>
     <lastmod>2020-03-17T00:00:00+00:00</lastmod>
   </url>
   
@@ -98,11 +153,6 @@
   </url>
   
   <url>
-    <loc>/tags/</loc>
-    <lastmod>2016-04-27T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>/authors/admin/</loc>
     <lastmod>2015-09-01T00:00:00+00:00</lastmod>
   </url>
@@ -140,10 +190,6 @@
   <url>
     <loc>/publication/</loc>
     <lastmod>2015-09-01T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/categories/</loc>
   </url>
   
 </urlset>
